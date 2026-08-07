@@ -93,8 +93,6 @@ def show_date_stats(df):
 
 
 def process_nested_dict_columns(df):
-    # parse each dict once, get row totals + per-key totals together
-    # (keeping parsed dict objects on the df blows up memory on the full file)
     breakdowns = {}
     for col in NESTED_DICT_COLUMNS:
         row_spend, row_impr = [], []
