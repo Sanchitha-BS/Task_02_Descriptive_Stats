@@ -33,4 +33,3 @@ All three scripts also perform grouped analysis by `page_id` and by `page_id`+`a
 - **`currency` is not exclusively USD** — 18 distinct currencies appear in the data.
 - **Grouped analysis** shows `page_id` (4,475 groups) is where meaningful aggregation happens — `page_id`+`ad_id` produces one group per row, since `ad_id` is already the dataset's atomic grain.
 
-For a detailed comparative analysis, see `REFLECTION.md`.
