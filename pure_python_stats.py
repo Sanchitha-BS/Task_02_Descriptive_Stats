@@ -15,7 +15,6 @@ NESTED_DICT_COLUMNS = {"delivery_by_region", "demographic_distribution"}
 BINARY_FLAG_THRESHOLD = 2
 FULL_FILE_GROUP_CAP = 200
 
-# fix for csv field size limit on Windows (32-bit C long)
 maxInt = sys.maxsize
 while True:
     try:
@@ -207,9 +206,6 @@ def grouped_analysis(rows, fieldnames, group_by_cols, full_report_path,
         print(f"  [{key_label}]  n_ads={size}  {spend_desc}")
 
     if all_singleton:
-        # every group is a single row here (ad_id is the atomic grain), so
-        # full per-group stats would just re-print each row - skip that,
-        # show a couple examples instead
         print(f"\nnote: all {len(groups)} groups have exactly 1 row, "
               f"{label} is already the dataset's atomic grain")
         for key in list(groups)[:degenerate_examples]:
@@ -217,9 +213,6 @@ def grouped_analysis(rows, fieldnames, group_by_cols, full_report_path,
             analyze_columns(groups[key], fieldnames, label=f"GROUP [{key_label}] (n=1)")
         return
 
-    # full stats per group scale with total rows regardless of group count,
-    # so cap to the largest groups to keep runtime reasonable and write
-    # those to file; console gets a size ranking plus the top few in full
     covered_rows = sum(size for _, size in group_sizes.most_common(FULL_FILE_GROUP_CAP))
     with open(full_report_path, "w", encoding="utf-8") as out:
         print(f"GROUPED ANALYSIS BY {label} -- full per-column stats for the "
